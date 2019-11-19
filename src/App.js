@@ -1,26 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./App.css";
+import Form from "./components/Form";
+import Items from "./components/Items";
+import Invaild from "./components/Invaild";
+
+class App extends React.Component {
+  state = {
+    items: []
+  };
+  // on click getData
+  getData = e => {
+    //prevent
+    e.preventDefault();
+    // input value
+    let search = e.target.elements.input;
+    if (search.value === "") {
+      alert("Add a movie name");
+    } else {
+      // key
+      const key = "97f1bd616b51e07825e04a855aaeed30";
+      // fetching data
+      fetch(
+        ` https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${search.value}`
+      )
+        .then(response => response.json())
+        .then(data => {
+          // adding data to state
+          this.setState({ items: data.results });
+          search.value = "";
+        });
+    }
+  };
+
+  // get data form localStorage
+  componentDidMount = () => {
+    const json = localStorage.getItem("recipes");
+    const recipes = JSON.parse(json);
+    this.setState({ items: recipes });
+  };
+
+  // add data to localStorage
+  componentDidUpdate = () => {
+    const recipes = JSON.stringify(this.state.items);
+    localStorage.setItem("recipes", recipes);
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <Form getData={this.getData} />
+        <div className="items">
+          {this.state.items.length === 0 ? (
+            <Invaild />
+          ) : (
+            this.state.items.map(item => <Items key={item.id} data={item} />)
+          )}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
