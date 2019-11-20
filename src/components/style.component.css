@@ -87,8 +87,13 @@ span link {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.container {
+  background: rgba(0, 0, 0, 0.466);
+}
+
 .showmore-title {
-  color: rgb(44, 41, 38);
+  color: rgb(255, 255, 255);
   font-size: 58px;
   padding-top: 50px;
 }
