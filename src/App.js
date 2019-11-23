@@ -3,7 +3,6 @@ import React from "react";
 import "./App.css";
 import Form from "./components/Form";
 import Items from "./components/Items";
-import Invaild from "./components/Invaild";
 
 class App extends React.Component {
   state = {
@@ -51,11 +50,9 @@ class App extends React.Component {
       <div className="App">
         <Form getData={this.getData} />
         <div className="items">
-          {this.state.items.length === 0 ? (
-            <Invaild />
-          ) : (
-            this.state.items.map(item => <Items key={item.id} data={item} />)
-          )}
+          {this.state.items.map(item => (
+            <Items key={item.id} data={item} />
+          ))}
         </div>
       </div>
     );
